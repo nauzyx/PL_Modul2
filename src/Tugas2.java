@@ -1,9 +1,9 @@
 import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 interface library {
-    /*  cekName, cekFrom, cekDate Function are method for check exist
+    /*
+        cekName, cekFrom, cekDate Function are method for check exist
         array variable which have 2 method
         find         ->  are used for users which wants to find related book
         dup          ->  are used for system to know if users add some book
@@ -80,7 +80,7 @@ public class Tugas2 implements library {
         for (String s : book) {
             System.out.printf("\n%-15s , %-15s . %-15s", parseBook(s,"name"), parseBook(s, "from"), parseBook(s, "date"));
         }
-        mainMenu();
+        returnMenu();
     }
 
     private String parseBook(String book, String tag){
@@ -122,7 +122,7 @@ public class Tugas2 implements library {
                 }
             }
         }
-        mainMenu();
+        returnMenu();
     }
     
     public void registerBook(){
@@ -136,7 +136,26 @@ public class Tugas2 implements library {
         book[inIndex] = bookName;
         inIndex++;
         System.out.println("Buku berhasil ditambahkan");
-        mainMenu();
+        returnMenu();
+    }
+
+    public void deleteBook(){
+        System.out.println("Delete Book ");
+        System.out.print("Masukkan Nama Buku : ");
+        input.nextLine(); String deleteIn = input.nextLine();
+        String[] tempBook = new String[book.length -1];
+        if (cekName("dup", deleteIn)) {
+            for (int i = 0, k = 0; i < book.length; i++) {
+                if (!deleteIn.equals(parseBook(book[i], "name"))) {
+                    tempBook[k++] = book[i];
+                }
+            }
+            inIndex--;
+            book = Arrays.copyOf(tempBook, inIndex);
+        } else {
+            System.out.println("Buku Tidak Tersedia di Sistem");
+        }
+        returnMenu();
     }
 
     public void inputName(){
@@ -170,16 +189,27 @@ public class Tugas2 implements library {
         inDate = input.nextInt();
     }
 
+    public void returnMenu(){
+        System.out.print("\nKembali ke menu ?");
+        input.nextLine();
+        String backConfirm = input.nextLine();
+        mainMenu();
+    }
+
     private void mainMenu(){
         System.out.print("\n===============================");
         System.out.println("\nWelcome to, UMM Library");
-        System.out.println("1. Book Register\n2. List Book\n3. Find Book");
+        System.out.println("CRUD with Dynamic ArraysDB");
+        System.out.println("===============================");
+        System.out.println("1. Book Register\n2. List Book\n3. Find Book\n4. Delete Book\n0. Exit");
         System.out.print("Pilih menu: ");
         int go = input.nextInt();
         switch (go) {
             case 1 -> registerBook();
             case 2 -> list();
             case 3 -> findBook();
+            case 4 -> deleteBook();
+            case 0 -> System.exit(0);
         }
     }
 
